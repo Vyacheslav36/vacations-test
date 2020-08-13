@@ -19,28 +19,24 @@ class BackendAsset extends AssetBundle
     /**
      * @var string
      */
-    public $sourcePath = '@backend/web/bundle';
+    public $basePath = '@webroot';
+
+    /**
+     * @var string
+     */
+    public $baseUrl = '@web';
 
     /**
      * @var array
      */
     public $css = [
-        'style.css'
+        'css/style.css'
     ];
     /**
      * @var array
      */
     public $js = [
-        'app.js'
-    ];
-
-    public $publishOptions = [
-        'only' => [
-            '*.css',
-            '*.js',
-            '../img/*'
-        ],
-        "forceCopy" => YII_ENV_DEV,
+        'js/app.js'
     ];
 
     /**

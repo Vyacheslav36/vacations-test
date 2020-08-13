@@ -2,7 +2,7 @@
 $config = [
     'homeUrl' => Yii::getAlias('@backendUrl'),
     'controllerNamespace' => 'backend\controllers',
-    'defaultRoute' => 'user/index',
+    'defaultRoute' => 'sign-in/profile',
     'components' => [
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -142,7 +142,7 @@ $config = [
             [
                 'controllers' => ['user'],
                 'allow' => true,
-                'roles' => ['administrator', 'manager', 'user'],
+                'roles' => ['administrator', 'manager'],
             ],
             [
                 'controllers' => ['user'],
