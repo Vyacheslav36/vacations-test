@@ -62,8 +62,12 @@ class UserProfile extends ActiveRecord
     public function rules()
     {
         return [
-            [['user_id'], 'required'],
-            [['department_id'], 'required', 'when' => !Yii::$app->user->can(User::ROLE_ADMINISTRATOR)],
+            'user_id' => [['user_id'], 'required'],
+            [['department_id'], 'required', 'when' => function ($model) {
+                return !Yii::$app->user->can(User::ROLE_ADMINISTRATOR);
+            }, 'whenClient' => "function (attribute, value) {
+                return false;
+            }"],
             [['user_id', 'gender', 'department_id'], 'integer'],
             [['gender'], 'in', 'range' => [NULL, self::GENDER_FEMALE, self::GENDER_MALE]],
             [['firstname', 'middlename', 'lastname', 'avatar_path', 'avatar_base_url'], 'string', 'max' => 255],
@@ -86,7 +90,7 @@ class UserProfile extends ActiveRecord
             'locale' => Yii::t('common', 'Locale'),
             'picture' => Yii::t('common', 'Picture'),
             'gender' => Yii::t('common', 'Gender'),
-            'department_id' => Yii::t('common', 'Department id'),
+            'department_id' => Yii::t('backend', 'Department'),
         ];
     }
 

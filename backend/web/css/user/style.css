@@ -1,0 +1,4 @@
+.user-form form {
+  display: flex;
+  flex-wrap: wrap;
+}

@@ -223,4 +223,7 @@ return [
     'Vacation successfully approved' => 'Отпуск успешно утвержден',
     'Vacation view' => 'Просмотр отпуска',
     'Select an employee' => 'Выберите сотрудника',
+    'Select department' => 'Выберите отдел',
+    'Select locale' => 'Выберите язык',
+    'Select gender' => 'Выберите пол',
 ];

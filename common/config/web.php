@@ -2,9 +2,12 @@
 $config = [
     'components' => [
         'assetManager' => [
-            'class' => yii\web\AssetManager::class,
-            'linkAssets' => env('LINK_ASSETS'),
-            'appendTimestamp' => YII_ENV_DEV
+            'converter' => [
+                'class' => yii\web\AssetConverter::class,
+                'commands' => [
+                    'less' => ['css', 'lessc {from} {to} --no-color'],
+                ],
+            ],
         ]
     ],
     'as locale' => [

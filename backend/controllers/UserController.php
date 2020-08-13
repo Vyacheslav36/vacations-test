@@ -102,15 +102,18 @@ class UserController extends Controller
      */
     public function actionUpdate($id)
     {
+        $user = $this->findModel($id);
+
         $model = new UserForm();
-        $model->setModel($this->findModel($id));
+        $model->setModel($user);
+        $model->setUserProfileModel($user->userProfile);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         }
 
         return $this->render('update', [
             'model' => $model,
-            'roles' => $model->getAccessibleRoleList($model->model->id === Yii::$app->user->id)
+            'roles' => $model->getAccessibleRoleList($user->id === Yii::$app->user->id)
         ]);
     }
 
