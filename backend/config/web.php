@@ -2,7 +2,7 @@
 $config = [
     'homeUrl' => Yii::getAlias('@backendUrl'),
     'controllerNamespace' => 'backend\controllers',
-    'defaultRoute' => 'sign-in/profile',
+    'defaultRoute' => 'vacation/index',
     'components' => [
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -43,17 +43,18 @@ $config = [
     'on beforeAction' => function ($event) {
         $availableControllers = [
             'manager' => [
+                'vacation' => [
+                    'index' => true,
+                    'create' => true,
+                    'view' => true,
+                    'update' => true,
+                ],
                 'sign-in' => [
                     'profile' => true,
                     'account' => true,
                     'login' => true,
                     'logout' => true,
                     'avatar-upload' => true,
-                ],
-                'vacation' => [
-                    'index' => true,
-                    'create' => true,
-                    'update' => true,
                 ],
                 'user' => [
                     'index' => true,
@@ -72,17 +73,18 @@ $config = [
                 ],
             ],
             'user' => [
+                'vacation' => [
+                    'index' => true,
+                    'create' => true,
+                    'update' => true,
+                    'view' => true,
+                ],
                 'sign-in' => [
                     'profile' => true,
                     'account' => true,
                     'login' => true,
                     'logout' => true,
                     'avatar-upload' => true,
-                ],
-                'vacation' => [
-                    'index' => true,
-                    'create' => true,
-                    'update' => true,
                 ],
                 'storage' => [
                     'upload' => true,

@@ -116,4 +116,12 @@ class UserProfile extends ActiveRecord
             ? Yii::getAlias($this->avatar_base_url . '/' . $this->avatar_path)
             : $default;
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDepartment()
+    {
+        return $this->hasOne(Department::class, ['id' => 'department_id']);
+    }
 }

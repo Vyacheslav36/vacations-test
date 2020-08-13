@@ -11,15 +11,6 @@ class m150725_192740_seed_data extends Migration
      */
     public function safeUp()
     {
-        $this->insert('{{%department}}', [
-            'id' => 1,
-            'name' => 'Тестовый отдел',
-            'settings' => [
-                'max_number_of_vacation_days' => 30,
-                'max_number_of_employees_on_vacation' => 2
-            ],
-        ]);
-
         $this->insert('{{%user}}', [
             'id' => 1,
             'username' => 'admin',
@@ -52,6 +43,16 @@ class m150725_192740_seed_data extends Migration
             'status' => User::STATUS_ACTIVE,
             'created_at' => time(),
             'updated_at' => time()
+        ]);
+
+        $this->insert('{{%department}}', [
+            'id' => 1,
+            'name' => 'Тестовый отдел',
+            'manager_id' => 2,
+            'settings' => [
+                'maxNumberOfVacationDays' => 30,
+                'maxNumberOfEmployeesOnVacation' => 2
+            ],
         ]);
 
         $this->insert('{{%user_profile}}', [

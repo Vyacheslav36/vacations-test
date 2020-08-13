@@ -213,6 +213,23 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDepartment()
+    {
+        return $this->hasOne(Department::class, ['id' => 'department_id'])
+            ->via('userProfile');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVacations()
+    {
+        return $this->hasMany(Vacation::class, ['user_id' => 'id']);
+    }
+
+    /**
      * @inheritdoc
      */
     public function validateAuthKey($authKey)

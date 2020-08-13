@@ -207,6 +207,24 @@ $logEntries[] = [
                             'visible' => Yii::$app->user->can('administrator') || Yii::$app->user->can('manager'),
                         ],
                         [
+                            'label' => Yii::t('backend', 'Departments'),
+                            'icon' => FAS::icon('code-branch', ['class' => ['nav-icon']]),
+                            'url' => ['/department/index'],
+                            'active' => Yii::$app->controller->id === 'department',
+                            'visible' => Yii::$app->user->can('administrator') || Yii::$app->user->can('manager'),
+                        ],
+                        [
+                            'label' => Yii::t('backend', 'Vacations'),
+                            'icon' => FAS::icon('calendar-alt', ['class' => ['nav-icon']]),
+                            'url' => ['/vacation/index'],
+                            'active' => Yii::$app->controller->id === 'vacation',
+                        ],
+                        [
+                            'label' => Yii::t('backend', 'System'),
+                            'options' => ['class' => 'nav-header'],
+                            'visible' => Yii::$app->user->can('administrator')
+                        ],
+                        [
                             'label' => Yii::t('backend', 'Logs'),
                             'url' => ['/system/log/index'],
                             'icon' => FAS::icon('clipboard-list', ['class' => ['nav-icon']]),
@@ -257,12 +275,6 @@ $logEntries[] = [
             </div>
         </section>
         <!-- /main content -->
-
-        <?php echo Html::a(FAS::icon('chevron-up'), '#', [
-            'class' => ['btn', 'btn-primary', 'back-to-top'],
-            'role' => 'button',
-            'aria-label' => 'Scroll to top',
-        ]) ?>
     </div>
     <!-- /content wrapper -->
 
