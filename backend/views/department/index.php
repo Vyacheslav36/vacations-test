@@ -15,14 +15,16 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="department-index">
     <div class="card">
         <div class="card-header">
-            <?php echo Html::a(Yii::t('backend', 'Create {modelClass}', [
-                'modelClass' => Yii::t('backend', 'Department'),
-            ]), ['create'], ['class' => 'btn btn-success']) ?>
+            <?php if (Yii::$app->user->can(\common\models\User::ROLE_ADMINISTRATOR)): ?>
+                <?php echo Html::a(Yii::t('backend', 'Create {modelClass}', [
+                    'modelClass' => Yii::t('backend', 'Department'),
+                ]), ['create'], ['class' => 'btn btn-success']) ?>
+            <?php endif; ?>
         </div>
 
         <div class="card-body p-0">
             <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-    
+
             <?php echo GridView::widget([
                 'layout' => "{items}\n{pager}",
                 'options' => [
@@ -44,10 +46,18 @@ $this->params['breadcrumbs'][] = $this->title;
                     'maxNumberOfVacationDays',
                     'maxNumberOfEmployeesOnVacation',
 
-                    ['class' => \common\widgets\ActionColumn::class],
+                    [
+                        'class' => \common\widgets\ActionColumn::class,
+                        'template' => '{view} {update} {delete}',
+                        'visibleButtons' => [
+                            'delete' => function ($model) {
+                                return Yii::$app->user->can(\common\models\User::ROLE_ADMINISTRATOR);
+                            },
+                        ]
+                    ],
                 ],
             ]); ?>
-    
+
         </div>
         <div class="card-footer">
             <?php echo getDataProviderSummary($dataProvider) ?>

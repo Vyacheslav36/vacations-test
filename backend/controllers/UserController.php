@@ -91,7 +91,7 @@ class UserController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'roles' => ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'name')
+            'roles' => $model->getAccessibleRoleList()
         ]);
     }
 
@@ -110,7 +110,7 @@ class UserController extends Controller
 
         return $this->render('update', [
             'model' => $model,
-            'roles' => ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'name')
+            'roles' => $model->getAccessibleRoleList($model->model->id === Yii::$app->user->id)
         ]);
     }
 

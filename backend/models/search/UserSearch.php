@@ -40,6 +40,10 @@ class UserSearch extends User
     {
         $query = User::find();
 
+        if (!\Yii::$app->user->can(User::ROLE_ADMINISTRATOR)) {
+            $query->forManager(\Yii::$app->user->id);
+        }
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);

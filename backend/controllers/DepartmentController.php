@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\User;
 use Yii;
 use common\models\Department;
 use backend\models\search\DepartmentSearch;
@@ -64,6 +65,10 @@ class DepartmentController extends Controller
     {
         $model = new Department();
 
+        if (!Yii::$app->user->can(User::ROLE_ADMINISTRATOR)) {
+            return $this->redirect(['index']);
+        }
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -98,6 +103,10 @@ class DepartmentController extends Controller
      */
     public function actionDelete($id)
     {
+        if (!Yii::$app->user->can(User::ROLE_ADMINISTRATOR)) {
+            return $this->redirect(['index']);
+        }
+
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

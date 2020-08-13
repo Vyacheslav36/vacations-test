@@ -16,6 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="card">
         <div class="card-header">
             <?php echo Html::a(Yii::t('backend', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?php if (Yii::$app->user->can(\common\models\User::ROLE_ADMINISTRATOR)): ?>
             <?php echo Html::a(Yii::t('backend', 'Delete'), ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
                 'data' => [
@@ -23,6 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'method' => 'post',
                 ],
             ]) ?>
+            <?php endif; ?>
         </div>
         <div class="card-body">
             <?php echo DetailView::widget([

@@ -2,6 +2,7 @@
 
 namespace backend\models\search;
 
+use common\models\User;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -42,6 +43,14 @@ class VacationSearch extends Vacation
     public function search($params)
     {
         $query = Vacation::find();
+
+        if (!\Yii::$app->user->can(User::ROLE_ADMINISTRATOR)) {
+            if (!\Yii::$app->user->can(User::ROLE_MANAGER)) {
+                $query->forManager(\Yii::$app->user->id);
+            } else {
+                $query->forUser(\Yii::$app->user->id);
+            }
+        }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

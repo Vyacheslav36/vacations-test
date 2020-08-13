@@ -20,22 +20,12 @@ use common\models\query\VacationQuery;
  * @property int|null $updated_at
  *
  * @property User $user
+ * @property UserProfile $userProfile
+ * @property Department $department
  */
 class Vacation extends \yii\db\ActiveRecord
 {
     protected $_dateRange;
-
-    /**
-     * Vacation constructor.
-     * @param array $config
-     */
-    public function __construct($config = [])
-    {
-        if ($this->scenario === 'create') {
-            $this->user_id = Yii::$app->user->id;
-        }
-        parent::__construct($config);
-    }
 
     /**
      * @return array
@@ -111,6 +101,28 @@ class Vacation extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    /**
+     * Gets query for [[User]].
+     *
+     * @return ActiveQuery|UserQuery
+     */
+    public function getUserProfile()
+    {
+        return $this->hasOne(UserProfile::class, ['user_id' => 'id'])
+            ->via('user');
+    }
+
+    /**
+     * Gets query for [[User]].
+     *
+     * @return ActiveQuery|UserQuery
+     */
+    public function getDepartment()
+    {
+        return $this->hasOne(Department::class, ['id' => 'department_id'])
+            ->via('userProfile');
     }
 
     /**

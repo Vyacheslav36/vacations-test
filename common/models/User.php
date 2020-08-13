@@ -2,7 +2,6 @@
 
 namespace common\models;
 
-use common\commands\AddToTimelineCommand;
 use common\models\query\UserQuery;
 use Yii;
 use yii\behaviors\AttributeBehavior;
@@ -286,28 +285,11 @@ class User extends ActiveRecord implements IdentityInterface
     public function notifySignup($event)
     {
         $this->refresh();
-        Yii::$app->commandBus->handle(new AddToTimelineCommand([
-            'category' => 'user',
-            'event' => 'signup',
-            'data' => [
-                'public_identity' => $this->getPublicIdentity(),
-                'user_id' => $this->getId(),
-                'created_at' => $this->created_at
-            ]
-        ]));
     }
 
     public function notifyDeletion($event)
     {
-        Yii::$app->commandBus->handle(new AddToTimelineCommand([
-            'category' => 'user',
-            'event' => 'delete',
-            'data' => [
-                'public_identity' => $this->getPublicIdentity(),
-                'user_id' => $this->getId(),
-                'deleted_at' => time()
-            ]
-        ]));
+
     }
 
     /**

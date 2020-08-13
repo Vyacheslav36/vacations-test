@@ -64,7 +64,7 @@ class VacationController extends Controller
     {
         $model = new Vacation();
 
-        $model->setScenario('create');
+        $model->user_id = Yii::$app->user->id;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -126,11 +126,6 @@ class VacationController extends Controller
         if (!$model->save()) {
             throw new \Exception('Error when updating', 500);
         }
-
-        Yii::$app->session->setFlash('alert', [
-            'options' => ['class' => 'alert-success'],
-            'body' => Yii::t('backend', 'Vacation successfully approved')
-        ]);
 
         $searchModel = new VacationSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);

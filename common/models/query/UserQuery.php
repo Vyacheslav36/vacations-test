@@ -29,4 +29,17 @@ class UserQuery extends ActiveQuery
         $this->andWhere(['status' => User::STATUS_ACTIVE]);
         return $this;
     }
+
+    /**
+     * @param int $managerId
+     * @return $this
+     */
+    public function forManager($managerId) {
+        $managerDepartmentId = User::findOne($managerId)->userProfile->department_id;
+        if ($managerDepartmentId) {
+            $this->joinWith('userProfile');
+            $this->andWhere(['user_profile.department_id' => $managerDepartmentId]);
+        }
+        return $this;
+    }
 }

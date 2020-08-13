@@ -11,6 +11,7 @@ use yii\db\ActiveRecord;
  *
  * @property integer $user_id
  * @property integer $locale
+ * @property integer $department_id
  * @property string $firstname
  * @property string $middlename
  * @property string $lastname
@@ -62,7 +63,8 @@ class UserProfile extends ActiveRecord
     {
         return [
             [['user_id'], 'required'],
-            [['user_id', 'gender'], 'integer'],
+            [['department_id'], 'required', 'when' => !Yii::$app->user->can(User::ROLE_ADMINISTRATOR)],
+            [['user_id', 'gender', 'department_id'], 'integer'],
             [['gender'], 'in', 'range' => [NULL, self::GENDER_FEMALE, self::GENDER_MALE]],
             [['firstname', 'middlename', 'lastname', 'avatar_path', 'avatar_base_url'], 'string', 'max' => 255],
             ['locale', 'default', 'value' => Yii::$app->language],
@@ -84,6 +86,7 @@ class UserProfile extends ActiveRecord
             'locale' => Yii::t('common', 'Locale'),
             'picture' => Yii::t('common', 'Picture'),
             'gender' => Yii::t('common', 'Gender'),
+            'department_id' => Yii::t('common', 'Department id'),
         ];
     }
 

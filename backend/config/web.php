@@ -64,6 +64,7 @@ $config = [
                 'department' => [
                     'index' => true,
                     'update' => true,
+                    'view' => true
                 ],
                 'storage' => [
                     'upload' => true,

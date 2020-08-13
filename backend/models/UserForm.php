@@ -135,4 +135,27 @@ class UserForm extends Model
         }
         return null;
     }
+
+    /**
+     * @param $isOwnRecord
+     * @return array
+     */
+    public function getAccessibleRoleList($isOwnRecord = false)
+    {
+        $notAllowedRoles = [];
+        if (!Yii::$app->user->can(User::ROLE_ADMINISTRATOR)) {
+            $notAllowedRoles = array_merge($notAllowedRoles, [User::ROLE_ADMINISTRATOR]);
+            if (!$isOwnRecord) {
+                $notAllowedRoles = array_merge($notAllowedRoles, [User::ROLE_MANAGER]);
+            }
+        }
+        $allRoles = ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'name');
+        $roleList = [];
+        foreach ($allRoles as $roleName) {
+            if (!in_array($roleName, $notAllowedRoles)) {
+                $roleList[$roleName] = $roleName;
+            }
+        }
+        return $roleList;
+    }
 }

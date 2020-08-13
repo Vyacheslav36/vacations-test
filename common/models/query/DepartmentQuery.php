@@ -3,6 +3,7 @@
 namespace common\models\query;
 
 use common\models\Department;
+use common\models\User;
 
 /**
  * This is the ActiveQuery class for [[\common\models\Department]].
@@ -27,5 +28,17 @@ class DepartmentQuery extends \yii\db\ActiveQuery
     public function one($db = null)
     {
         return parent::one($db);
+    }
+
+    /**
+     * @param int $managerId
+     * @return $this
+     */
+    public function forManager($managerId) {
+        $managerDepartmentId = User::findOne($managerId)->userProfile->department_id;
+        if ($managerDepartmentId) {
+            $this->andWhere(['id' => $managerDepartmentId]);
+        }
+        return $this;
     }
 }

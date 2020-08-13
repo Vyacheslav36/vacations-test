@@ -2,6 +2,7 @@
 
 namespace backend\models\search;
 
+use common\models\User;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -42,6 +43,10 @@ class DepartmentSearch extends Department
     public function search($params)
     {
         $query = Department::find();
+
+        if (!\Yii::$app->user->can(User::ROLE_ADMINISTRATOR)) {
+            $query->forManager(\Yii::$app->user->id);
+        }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
