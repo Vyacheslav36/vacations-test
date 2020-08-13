@@ -158,4 +158,27 @@ class UserForm extends Model
         }
         return $roleList;
     }
+
+    /**
+     * @return array
+     */
+    public static function getListForSelect($onlyManagers = false)
+    {
+        $query = User::find();
+
+        if ($onlyManagers) {
+            $query->onlyManagers();
+        }
+
+        if (!\Yii::$app->user->can(User::ROLE_ADMINISTRATOR)) {
+            $query->forManager(\Yii::$app->user->id);
+        }
+        $result = [];
+        $users = $query->all();
+        foreach ($users as $item) {
+            $result[$item->id] = $item->publicIdentity;
+        }
+
+        return $result;
+    }
 }

@@ -3,11 +3,12 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\Vacation;
-use backend\models\search\VacationSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use backend\models\UserForm;
+use common\models\Vacation;
+use backend\models\search\VacationSearch;
 
 /**
  * VacationController implements the CRUD actions for Vacation model.
@@ -69,8 +70,12 @@ class VacationController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
+
+        $usersList = UserForm::getListForSelect();
+
         return $this->render('create', [
             'model' => $model,
+            'usersList' => $usersList
         ]);
     }
 
@@ -91,8 +96,12 @@ class VacationController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
+
+        $usersList = UserForm::getListForSelect();
+
         return $this->render('update', [
             'model' => $model,
+            'usersList' => $usersList
         ]);
     }
 

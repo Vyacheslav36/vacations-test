@@ -8,6 +8,7 @@ use kartik\form\ActiveForm;
  * @var yii\web\View $this
  * @var common\models\Vacation $model
  * @var kartik\form\ActiveForm $form
+ * @var array $usersList
  */
 ?>
 
@@ -16,6 +17,15 @@ use kartik\form\ActiveForm;
     <div class="card">
         <div class="card-body">
             <?php echo $form->errorSummary($model); ?>
+
+            <?php if (Yii::$app->user->can(\common\models\User::ROLE_MANAGER)): ?>
+                <?php echo $form->field($model, 'user_id')->widget(\kartik\select2\Select2::class, [
+                    'data' => $usersList,
+                    'language' => 'ru',
+                    'options' => ['placeholder' => Yii::t('backend', 'Select an employee')],
+                ]);
+                ?>
+            <?php endif; ?>
 
             <?php echo $form->field($model, 'dateRange', [
                 'addon' => ['prepend' => ['content' => '<i class="fas fa-calendar-alt"></i>']],

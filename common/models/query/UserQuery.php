@@ -42,4 +42,13 @@ class UserQuery extends ActiveQuery
         }
         return $this;
     }
+
+    /**
+     * @return $this
+     */
+    public function onlyManagers() {
+        $managerRole = User::ROLE_MANAGER;
+        $this->where("user.id in (select user_id from rbac_auth_assignment where item_name = '$managerRole')");
+        return $this;
+    }
 }

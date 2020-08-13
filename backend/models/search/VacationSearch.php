@@ -45,7 +45,7 @@ class VacationSearch extends Vacation
         $query = Vacation::find();
 
         if (!\Yii::$app->user->can(User::ROLE_ADMINISTRATOR)) {
-            if (!\Yii::$app->user->can(User::ROLE_MANAGER)) {
+            if (\Yii::$app->user->can(User::ROLE_MANAGER)) {
                 $query->forManager(\Yii::$app->user->id);
             } else {
                 $query->forUser(\Yii::$app->user->id);

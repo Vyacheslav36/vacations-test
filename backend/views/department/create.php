@@ -3,6 +3,7 @@
 /**
  * @var yii\web\View $this
  * @var common\models\Department $model
+ * @var array $managerList
  */
 
 $this->title = Yii::t('backend', 'Create {modelClass}', [
@@ -15,6 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php echo $this->render('_form', [
         'model' => $model,
+        'managerList' => $managerList,
     ]) ?>
 
 </div>

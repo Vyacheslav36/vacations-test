@@ -7,6 +7,7 @@ use yii\bootstrap4\ActiveForm;
  * @var yii\web\View $this
  * @var common\models\Department $model
  * @var yii\bootstrap4\ActiveForm $form
+ * @var array $managerList
  */
 ?>
 
@@ -17,7 +18,12 @@ use yii\bootstrap4\ActiveForm;
                 <?php echo $form->errorSummary($model); ?>
 
                 <?php echo $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-                <?php echo $form->field($model, 'manager_id')->textInput(['maxlength' => true]) ?>
+                <?php echo $form->field($model, 'manager_id')->widget(\kartik\select2\Select2::class, [
+                    'data' => $managerList,
+                    'language' => 'ru',
+                    'options' => ['placeholder' => Yii::t('backend', 'Select an employee')],
+                ]);
+                ?>
                 <?php echo $form->field($model, 'maxNumberOfVacationDays')->textInput() ?>
                 <?php echo $form->field($model, 'maxNumberOfEmployeesOnVacation')->textInput() ?>
 

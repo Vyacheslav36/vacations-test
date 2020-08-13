@@ -3,6 +3,7 @@
 /**
  * @var yii\web\View $this
  * @var common\models\Vacation $model
+ * @var array $usersList
  */
 
 $this->title = Yii::t('backend', 'Update {modelClass}: ', [
@@ -16,6 +17,7 @@ $this->params['breadcrumbs'][] = Yii::t('backend', 'Update');
 
     <?php echo $this->render('_form', [
         'model' => $model,
+        'usersList' => $usersList
     ]) ?>
 
 </div>

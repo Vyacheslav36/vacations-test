@@ -84,7 +84,7 @@ class Vacation extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('backend', 'ID'),
-            'user_id' => Yii::t('backend', 'User ID'),
+            'user_id' => Yii::t('backend', 'Employee'),
             'from_date' => Yii::t('backend', 'Vacation start'),
             'to_date' => Yii::t('backend', 'Vacation end'),
             'is_approved' => Yii::t('backend', 'Is Approved'),

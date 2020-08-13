@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\UserForm;
 use common\models\User;
 use Yii;
 use common\models\Department;
@@ -69,11 +70,14 @@ class DepartmentController extends Controller
             return $this->redirect(['index']);
         }
 
+        $managerList = UserForm::getListForSelect(true);
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
         return $this->render('create', [
             'model' => $model,
+            'managerList' => $managerList,
         ]);
     }
 
@@ -90,8 +94,12 @@ class DepartmentController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
+
+        $managerList = UserForm::getListForSelect(true);
+
         return $this->render('update', [
             'model' => $model,
+            'managerList' => $managerList,
         ]);
     }
 

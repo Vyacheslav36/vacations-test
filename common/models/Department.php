@@ -77,7 +77,7 @@ class Department extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('backend', 'ID'),
             'name' => Yii::t('backend', 'Name'),
-            'manager_id' => Yii::t('backend', 'Manager ID'),
+            'manager_id' => Yii::t('backend', 'Head of department'),
             'settings' => Yii::t('backend', 'Settings'),
             'maxNumberOfVacationDays' => Yii::t('backend', 'Maximum number of vacation days'),
             'maxNumberOfEmployeesOnVacation' => Yii::t('backend', 'Maximum number of employees on vacation'),
