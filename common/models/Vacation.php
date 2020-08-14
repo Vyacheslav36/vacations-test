@@ -25,6 +25,7 @@ use common\models\query\VacationQuery;
  */
 class Vacation extends \yii\db\ActiveRecord
 {
+    public $additionalValidation = true;
     protected $_dateRange;
 
     /**
@@ -101,22 +102,24 @@ class Vacation extends \yii\db\ActiveRecord
 
     public function validateVacationDate($attribute)
     {
-        $fromDate = $this->from_date;
-        $toDate = $this->to_date;
-        $user = User::findOne($this->user_id);
-        if ($user && $user->userProfile->department) {
-            $maxNumberOfEmployeesOnVacation = $user->userProfile->department->maxNumberOfEmployeesOnVacation;
-            $maxNumberOfVacationDays = $user->userProfile->department->maxNumberOfVacationDays;
-            if (VacationQuery::getNumberOfIntersectingVacations($user->id, $fromDate, $toDate) >= $maxNumberOfEmployeesOnVacation) {
-                $this->addError('dateRange', Yii::t('backend', 'Your dates overlap with more than {number} employees', [
-                    'number' => $maxNumberOfEmployeesOnVacation
-                ]));
-            }
+        if ($this->additionalValidation) {
+            $fromDate = $this->from_date;
+            $toDate = $this->to_date;
+            $user = User::findOne($this->user_id);
+            if ($user && $user->userProfile->department) {
+                $maxNumberOfEmployeesOnVacation = $user->userProfile->department->maxNumberOfEmployeesOnVacation;
+                $maxNumberOfVacationDays = $user->userProfile->department->maxNumberOfVacationDays;
+                if (VacationQuery::getNumberOfIntersectingVacations($user->id, $fromDate, $toDate) >= $maxNumberOfEmployeesOnVacation) {
+                    $this->addError('dateRange', Yii::t('backend', 'Your dates overlap with more than {number} employees', [
+                        'number' => $maxNumberOfEmployeesOnVacation
+                    ]));
+                }
 
-            if (!$this->checkForNumberOfVacationDays($user->id, $fromDate, $toDate, $maxNumberOfVacationDays)) {
-                $this->addError('dateRange', Yii::t('backend', 'You have exceeded the possible number of vacation days per year: {number}', [
-                    'number' => $maxNumberOfVacationDays
-                ]));
+                if (!$this->checkForNumberOfVacationDays($user->id, $fromDate, $toDate, $maxNumberOfVacationDays)) {
+                    $this->addError('dateRange', Yii::t('backend', 'You have exceeded the possible number of vacation days per year: {number}', [
+                        'number' => $maxNumberOfVacationDays
+                    ]));
+                }
             }
         }
     }

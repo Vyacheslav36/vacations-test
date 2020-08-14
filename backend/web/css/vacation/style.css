@@ -1,0 +1,12 @@
+.vacation-item {
+  display: flex;
+  justify-content: space-between;
+}
+.vacation-form {
+  display: flex;
+  flex-wrap: wrap;
+}
+.grid-view {
+  max-height: 500px;
+  overflow-y: auto;
+}

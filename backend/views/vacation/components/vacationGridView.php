@@ -63,7 +63,7 @@ use \kartik\widgets\DatePicker;
             'template' => '{view} {update} {delete} {approve}',
             'buttons' => [
                 'approve' => function ($url, $model) {
-                    return Html::a('<i class="fa-fw fas fa-check"></i>', '/', [
+                    return Html::button('<i class="fa-fw fas fa-check"></i>', [
                             'class' => "btn btn-success btn-xs js_approve_vacation",
                             'title' => Yii::t('backend', 'Approve'),
                             'data-confirm-other' => Yii::t('backend', 'Are you sure you want to approve the vacation?'),

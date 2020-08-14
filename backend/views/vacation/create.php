@@ -4,6 +4,7 @@
  * @var yii\web\View $this
  * @var common\models\Vacation $model
  * @var array $usersList
+ * @var \yii\data\ActiveDataProvider $vacationsDataProvider
  */
 
 $this->title = Yii::t('backend', 'Create {modelClass}', [
@@ -16,7 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php echo $this->render('_form', [
         'model' => $model,
-        'usersList' => $usersList
+        'usersList' => $usersList,
+        'vacationsDataProvider' => $vacationsDataProvider
     ]) ?>
 
 </div>

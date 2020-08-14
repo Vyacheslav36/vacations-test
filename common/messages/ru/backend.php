@@ -228,4 +228,8 @@ return [
     'Select gender' => 'Выберите пол',
     'Your dates overlap with more than {number} employees' => 'Ваши даты совпадают с более чем {number} сотрудниками',
     'You have exceeded the possible number of vacation days per year: {number}' => 'Вы превысили возможное количество отпускных дней в году: {number}',
+    'Vacation department' => 'Отпуска отдела',
+    'Approved' => 'Утвержден',
+    'Approve' => 'Утвердить',
+    'Not approved' => 'Не утвержден',
 ];

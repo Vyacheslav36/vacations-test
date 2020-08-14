@@ -2,7 +2,9 @@
 
 namespace backend\controllers;
 
+use common\models\User;
 use Yii;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -71,11 +73,25 @@ class VacationController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+        $departmentId = Yii::$app->user->identity->userProfile->department_id;
+        $vacationsInDepartment = Vacation::find()
+            ->joinWith('department');
+
+        if ($departmentId) {
+            $vacationsInDepartment->where(['department.id' => $departmentId]);
+        }
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $vacationsInDepartment,
+            'sort' => false
+        ]);
+
         $usersList = UserForm::getListForSelect();
 
         return $this->render('create', [
             'model' => $model,
-            'usersList' => $usersList
+            'usersList' => $usersList,
+            'vacationsDataProvider' => $dataProvider
         ]);
     }
 
@@ -97,11 +113,25 @@ class VacationController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+        $departmentId = $model->userProfile->department_id;
+        $vacationsInDepartment = Vacation::find()
+            ->joinWith('department');
+
+        if ($departmentId) {
+            $vacationsInDepartment->where(['department.id' => $departmentId]);
+        }
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $vacationsInDepartment,
+            'sort' => false
+        ]);
+
         $usersList = UserForm::getListForSelect();
 
         return $this->render('update', [
             'model' => $model,
-            'usersList' => $usersList
+            'usersList' => $usersList,
+            'vacationsDataProvider' => $dataProvider
         ]);
     }
 
@@ -130,6 +160,7 @@ class VacationController extends Controller
     {
         $model = $this->findModel($id);
 
+        $model->additionalValidation = false;
         $model->is_approved = true;
 
         if (!$model->save()) {
