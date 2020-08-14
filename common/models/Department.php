@@ -15,6 +15,8 @@ use common\models\query\DepartmentQuery;
  * @property string|null $settings
  *
  * @property UserProfile[] $userProfiles
+ * @property int $maxNumberOfEmployeesOnVacation
+ * @property int $maxNumberOfVacationDays
  */
 class Department extends \yii\db\ActiveRecord
 {

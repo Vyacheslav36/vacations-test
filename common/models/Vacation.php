@@ -44,7 +44,7 @@ class Vacation extends \yii\db\ActiveRecord
     public function getDateRange()
     {
         return $this->from_date && $this->to_date
-            ? 'с ' . \Yii::$app->formatter->asDate($this->from_date, "php:d-m-Y") . ' по ' . \Yii::$app->formatter->asDate($this->to_date, "php:d-m-Y")
+            ? \Yii::$app->formatter->asDate($this->from_date, "php:d-m-Y") . ' - ' . \Yii::$app->formatter->asDate($this->to_date, "php:d-m-Y")
             : null;
     }
 
@@ -62,15 +62,79 @@ class Vacation extends \yii\db\ActiveRecord
     }
 
     /**
+     * The function counts the number of days between two dates
+     *
+     * @param int $d1
+     * @param int $d2
+     *
+     * @return number amount of days
+     */
+    public static function countDaysBetweenDates($d1, $d2)
+    {
+        $seconds = abs($d2 - $d1);
+
+        return round($seconds / 86400);
+    }
+
+    /**
+     * Function for checking if the possible number of vacation days per year is exceeded
+     *
+     * @param int $userId
+     * @param int $fromDate
+     * @param int $toDate
+     * @param int $maxNumberOfVacationDays
+     *
+     * @return bool
+     */
+    private function checkForNumberOfVacationDays(int $userId, int $fromDate, int $toDate, $maxNumberOfVacationDays = 0)
+    {
+        $vacationsForEmployeeInCurrentYear = VacationQuery::getVacationsForEmployeeInCurrentYear($userId);
+        $numberOfVacationDays = $this->countDaysBetweenDates($fromDate, $toDate);
+        foreach ($vacationsForEmployeeInCurrentYear as $vacation) {
+            $numberOfVacationDays += $this->countDaysBetweenDates($vacation->from_date, $vacation->to_date);
+        }
+        if ($numberOfVacationDays > $maxNumberOfVacationDays) {
+            return false;
+        }
+        return true;
+    }
+
+    public function validateVacationDate($attribute)
+    {
+        $fromDate = $this->from_date;
+        $toDate = $this->to_date;
+        $user = User::findOne($this->user_id);
+        if ($user && $user->userProfile->department) {
+            $maxNumberOfEmployeesOnVacation = $user->userProfile->department->maxNumberOfEmployeesOnVacation;
+            $maxNumberOfVacationDays = $user->userProfile->department->maxNumberOfVacationDays;
+            if (VacationQuery::getNumberOfIntersectingVacations($user->id, $fromDate, $toDate) >= $maxNumberOfEmployeesOnVacation) {
+                $this->addError('dateRange', Yii::t('backend', 'Your dates overlap with more than {number} employees', [
+                    'number' => $maxNumberOfEmployeesOnVacation
+                ]));
+            }
+
+            if (!$this->checkForNumberOfVacationDays($user->id, $fromDate, $toDate, $maxNumberOfVacationDays)) {
+                $this->addError('dateRange', Yii::t('backend', 'You have exceeded the possible number of vacation days per year: {number}', [
+                    'number' => $maxNumberOfVacationDays
+                ]));
+            }
+        }
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
             [['user_id', 'from_date', 'to_date'], 'required'],
-            [['from_date', 'to_date'], 'filter', 'filter' => function ($value) {
+            [['from_date'], 'filter', 'filter' => function ($value) {
                 return is_int($value) ? $value : strtotime($value);
             }],
+            [['to_date'], 'filter', 'filter' => function ($value) {
+                return is_int($value) ? $value : strtotime($value . '+23 hour 59 minute 59 second');
+            }],
+            [['from_date', 'to_date'], 'validateVacationDate'],
             ['is_approved', 'boolean'],
             [['user_id', 'created_at', 'updated_at', 'from_date', 'to_date'], 'integer'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],

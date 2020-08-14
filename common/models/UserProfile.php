@@ -22,6 +22,7 @@ use yii\db\ActiveRecord;
  * @property integer $gender
  *
  * @property User $user
+ * @property Department $department
  */
 class UserProfile extends ActiveRecord
 {
