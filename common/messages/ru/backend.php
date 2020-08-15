@@ -232,4 +232,5 @@ return [
     'Approved' => 'Утвержден',
     'Approve' => 'Утвердить',
     'Not approved' => 'Не утвержден',
+    'Settings' => 'Настройки',
 ];

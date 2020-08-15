@@ -1,5 +1,6 @@
 <?php
 
+use backend\models\UserForm;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -38,13 +39,27 @@ $this->params['breadcrumbs'][] = $this->title;
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
 
-                    'name',
                     [
-                        'attribute' => 'manager.publicIdentity',
+                        'attribute' => 'name',
+                        'label' => Yii::t('backend', 'Department')
+                    ],
+                    [
+                        'attribute' => 'manager_id',
+                        'value' => function ($model) {
+                            return $model->manager->publicIdentity;
+                        },
+                        'filter' => UserForm::getListForSelect(true),
                         'label' => Yii::t('backend', 'Head of department')
                     ],
-                    'maxNumberOfVacationDays',
-                    'maxNumberOfEmployeesOnVacation',
+                    [
+                        'format' => 'html',
+                        'value' => function ($model) {
+                            $maxNumberOfVacationDays = $model->attributeLabels()['maxNumberOfVacationDays'] . ': ' . $model->maxNumberOfVacationDays;
+                            $maxNumberOfEmployeesOnVacation = $model->attributeLabels()['maxNumberOfEmployeesOnVacation'] . ': ' . $model->maxNumberOfEmployeesOnVacation;
+                            return join('<br/>', [$maxNumberOfVacationDays, $maxNumberOfEmployeesOnVacation]);
+                        },
+                        'label' => Yii::t('backend', 'Settings'),
+                    ],
 
                     [
                         'class' => \common\widgets\ActionColumn::class,

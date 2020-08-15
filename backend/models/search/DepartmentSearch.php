@@ -20,7 +20,7 @@ class DepartmentSearch extends Department
     {
         return [
             [['id'], 'integer'],
-            [['name', 'settings'], 'safe'],
+            [['name', 'manager_id', 'settings'], 'safe'],
         ];
     }
 
@@ -58,6 +58,7 @@ class DepartmentSearch extends Department
 
         $query->andFilterWhere([
             'id' => $this->id,
+            'manager_id' => $this->manager_id,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
