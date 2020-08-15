@@ -38,7 +38,6 @@ class VacationQuery extends \yii\db\ActiveQuery
     {
         $managerDepartmentId = User::findOne($managerId)->userProfile->department_id;
         if ($managerDepartmentId) {
-            $this->joinWith('department');
             $this->andWhere(['department.id' => $managerDepartmentId]);
         }
         return $this;

@@ -241,8 +241,13 @@ class UserForm extends Model
         }
 
         if (!\Yii::$app->user->can(User::ROLE_ADMINISTRATOR)) {
-            $query->forManager(\Yii::$app->user->id);
+            if (\Yii::$app->user->can(User::ROLE_MANAGER)) {
+                $query->forManager(\Yii::$app->user->id);
+            } else {
+                $query->forUser(\Yii::$app->user->id);
+            }
         }
+
         $result = [];
         $users = $query->all();
         foreach ($users as $item) {

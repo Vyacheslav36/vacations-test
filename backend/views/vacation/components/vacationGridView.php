@@ -1,5 +1,6 @@
 <?php
 
+use backend\models\UserForm;
 use common\widgets\ActionColumn;
 use yii\helpers\Html;
 use yii\grid\GridView;
@@ -27,7 +28,11 @@ use \kartik\widgets\DatePicker;
         ['class' => 'yii\grid\SerialColumn'],
 
         [
-            'attribute' => 'user.publicIdentity',
+            'attribute' => 'user_id',
+            'value' => function ($model) {
+                return $model->user->publicIdentity;
+            },
+            'filter' => UserForm::getListForSelect(),
             'label' => Yii::t('backend', 'Employee')
         ],
         [

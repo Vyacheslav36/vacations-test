@@ -42,7 +42,8 @@ class VacationSearch extends Vacation
      */
     public function search($params)
     {
-        $query = Vacation::find();
+        $query = Vacation::find()
+            ->joinWith('department');
 
         if (!\Yii::$app->user->can(User::ROLE_ADMINISTRATOR)) {
             if (\Yii::$app->user->can(User::ROLE_MANAGER)) {
@@ -64,23 +65,26 @@ class VacationSearch extends Vacation
         $toDate = strtotime($this->to_date);
 
         if ($fromDate && $toDate) {
-            $query->andFilterWhere(['between', 'from_date', $fromDate, $toDate]);
-            $query->orFilterWhere(['between', 'to_date', $fromDate, $toDate]);
-            $query->orFilterWhere(['<=', 'from_date', "$fromDate and to_date >= $toDate"]);
+            $query->andFilterWhere([
+                "or",
+                "(vacation.from_date between $fromDate and $toDate) or (vacation.to_date between $fromDate and $toDate)",
+                "(vacation.from_date <= $fromDate and $toDate >= vacation.to_date)"
+            ]);
         } else {
             if ($fromDate) {
-                $query->andFilterWhere(['>=', 'from_date', $fromDate]);
-            } if ($toDate) {
-                $query->andFilterWhere(['<=', 'to_date', $toDate]);
+                $query->andFilterWhere(['>=', 'vacation.from_date', $fromDate]);
+            }
+            if ($toDate) {
+                $query->andFilterWhere(['<=', 'vacation.to_date', $toDate]);
             }
         }
 
         $query->andFilterWhere([
-            'id' => $this->id,
-            'user_id' => $this->user_id,
-            'is_approved' => $this->is_approved,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'vacation.id' => $this->id,
+            'vacation.user_id' => $this->user_id,
+            'vacation.is_approved' => $this->is_approved,
+            'vacation.created_at' => $this->created_at,
+            'vacation.updated_at' => $this->updated_at,
         ]);
 
         return $dataProvider;

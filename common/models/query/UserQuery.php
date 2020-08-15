@@ -44,6 +44,15 @@ class UserQuery extends ActiveQuery
     }
 
     /**
+     * @param int $userId
+     * @return $this
+     */
+    public function forUser($userId) {
+        $this->andWhere(['user.id' => $userId]);
+        return $this;
+    }
+
+    /**
      * @return $this
      */
     public function onlyManagers() {
