@@ -49,7 +49,7 @@ class VacationQuery extends \yii\db\ActiveQuery
      */
     public function forUser($userId)
     {
-        $this->andWhere(['user_id' => $userId]);
+        $this->andWhere(['vacation.user_id' => $userId]);
         return $this;
     }
 

@@ -37,7 +37,7 @@ class DepartmentQuery extends \yii\db\ActiveQuery
     public function forManager($managerId) {
         $managerDepartmentId = User::findOne($managerId)->userProfile->department_id;
         if ($managerDepartmentId) {
-            $this->andWhere(['id' => $managerDepartmentId]);
+            $this->andWhere(['department.id' => $managerDepartmentId]);
         }
         return $this;
     }

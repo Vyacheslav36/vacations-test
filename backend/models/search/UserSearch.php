@@ -11,13 +11,15 @@ use yii\data\ActiveDataProvider;
  */
 class UserSearch extends User
 {
+    public $departmentId;
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'status'], 'integer'],
+            [['id', 'status', 'departmentId'], 'integer'],
             [['created_at', 'updated_at', 'logged_at'], 'default', 'value' => null],
             [['username', 'auth_key', 'password_hash', 'email'], 'safe'],
         ];
@@ -38,7 +40,8 @@ class UserSearch extends User
      */
     public function search($params)
     {
-        $query = User::find();
+        $query = User::find()
+            ->joinWith('department');
 
         if (!\Yii::$app->user->can(User::ROLE_ADMINISTRATOR)) {
             $query->forManager(\Yii::$app->user->id);
@@ -55,6 +58,7 @@ class UserSearch extends User
         $query->andFilterWhere([
             'id' => $this->id,
             'status' => $this->status,
+            'department.id' => $this->departmentId,
         ]);
 
         if ($this->created_at !== null) {

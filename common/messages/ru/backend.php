@@ -233,4 +233,5 @@ return [
     'Approve' => 'Утвердить',
     'Not approved' => 'Не утвержден',
     'Settings' => 'Настройки',
+    'Unknown' => 'Неизвестно',
 ];

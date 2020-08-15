@@ -1,5 +1,6 @@
 <?php
 
+use backend\models\DepartmentForm;
 use common\grid\EnumColumn;
 use common\models\User;
 use kartik\date\DatePicker;
@@ -18,9 +19,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="card">
     <div class="card-header">
-        <?php echo Html::a(FAS::icon('user-plus').' '.Yii::t('backend', 'Add New {modelClass}', [
-            'modelClass' => 'User',
-        ]), ['create'], ['class' => 'btn btn-success']) ?>
+        <?php echo Html::a(FAS::icon('user-plus') . ' ' . Yii::t('backend', 'Add New {modelClass}', [
+                'modelClass' => 'User',
+            ]), ['create'], ['class' => 'btn btn-success']) ?>
     </div>
 
     <div class="card-body p-0">
@@ -35,17 +36,23 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => ['table', 'text-nowrap', 'table-striped', 'table-bordered', 'mb-0'],
             ],
             'columns' => [
-                [
-                    'attribute' => 'id',
-                    'options' => ['style' => 'width: 5%'],
-                ],
                 'username',
                 'email:email',
                 [
                     'class' => EnumColumn::class,
                     'attribute' => 'status',
                     'enum' => User::statuses(),
-                    'filter' => User::statuses()
+                    'filter' => User::statuses(),
+                    'visible' => Yii::$app->user->can(User::ROLE_ADMINISTRATOR)
+                ],
+                [
+                    'attribute' => 'departmentId',
+                    'value' => function ($model) {
+                        return $model->department->name ?? Yii::t('backend', 'Unknown');
+                    },
+                    'label' => Yii::t('backend', 'Department'),
+                    'filter' => DepartmentForm::getListForSelect(),
+                    'visible' => Yii::$app->user->can(User::ROLE_ADMINISTRATOR)
                 ],
                 [
                     'attribute' => 'created_at',
@@ -61,21 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'endDate' => '0d',
                         ]
                     ]),
-                ],
-                [
-                    'attribute' => 'logged_at',
-                    'format' => 'datetime',
-                    'filter' => DatePicker::widget([
-                        'model' => $searchModel,
-                        'attribute' => 'logged_at',
-                        'type' => DatePicker::TYPE_COMPONENT_APPEND,
-                        'pluginOptions' => [
-                            'format' => 'dd-mm-yyyy',
-                            'showMeridian' => true,
-                            'todayBtn' => true,
-                            'endDate' => '0d',
-                        ]
-                    ]),
+                    'visible' => Yii::$app->user->can(User::ROLE_ADMINISTRATOR)
                 ],
                 // 'updated_at',
 
